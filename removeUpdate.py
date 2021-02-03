@@ -11,8 +11,28 @@ mycursor = mydb.cursor()
 def createTable():
     mycursor.execute("CREATE TABLE IF NOT EXISTS customers(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), address VARCHAR(255))")
 
-
 createTable()
+
+def menu():
+    ans = input("Enter name or 'remove'/'update': ")
+    if ans == "Done":
+        print("close")
+    elif ans == "update":
+        update()
+        ans = input("Enter 0 to go back")
+        
+        if ans == "0":
+            menu()
+    elif ans == "remove":
+        remove()
+        ans = input("Enter 0 to go back")
+        if ans == "0":
+            menu()
+    else:
+        name = ans
+        address = input("Enter address: ")
+        exist(name, address)
+        menu()
 
 def insertonerow(x, y):
     query = "INSERT INTO IF NOT EXISTS customers (name, address) VALUES (%s,%s)"
@@ -42,7 +62,6 @@ def exist(name, address):
         print(mycursor.rowcount, "records inserted")
     else:
         print("Already Exists")
-
         
 def update():
     ID = input("Enter ID: ")
@@ -59,26 +78,5 @@ def remove():
     mycursor.execute(query)
     mydb.commit()
     print("Deleted")
-    
-def menu():
-    ans = input("Enter name or 'remove'/'update': ")
-    if ans == "Done":
-        print("close")
-    elif ans == "update":
-        update()
-        ans = input("Enter 0 to go back")
-        
-        if ans == "0":
-            menu()
-    elif ans == "remove":
-        remove()
-        ans = input("Enter 0 to go back")
-        if ans == "0":
-            menu()
-    else:
-        name = ans
-        address = input("Enter address: ")
-        exist(name, address)
-        menu()
         
 menu()
